@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Subscription Plans</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --accent-color: #4f46e5;
+            --highlight-color: #4338ca;
+            --light-bg: #f9fafb;
+            --dark-text: #1f2937;
+            --light-text: #6b7280;
+            --white: #ffffff;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            padding: 2rem 0;
+        }
+        
+        .subscription-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .section-heading {
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--primary-color), var(--highlight-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+        
+        .section-subheading {
+            color: var(--light-text);
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 3rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            background: var(--white);
+            box-shadow: var(--card-shadow);
+            position: relative;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #e11d48, #f97316);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .card:hover::before {
+            opacity: 1;
+        }
+        
+        .card-selected {
+            background: linear-gradient(135deg, var(--primary-color), var(--highlight-color));
+            color: var(--white);
+            transform: translateY(-8px) scale(1.02);
+        }
+        
+        .card-selected::before {
+            opacity: 0;
+        }
+        
+        .card-body {
+            padding: 2rem;
+        }
+        
+        .plan-badge {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .standard-badge {
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .pro-badge {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--accent-color);
+        }
+        
+        .premium-badge {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .price-container {
+            margin: 1.5rem 0;
+        }
+        
+        .currency {
+            font-size: 1.25rem;
+            font-weight: 500;
+            vertical-align: top;
+            line-height: 1;
+        }
+        
+        .price {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .price-period {
+            font-size: 1rem;
+            color: var(--light-text);
+            margin-left: 0.5rem;
+        }
+        
+        .card-selected .price-period {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .subscribe-btn {
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            border: none;
+            width: 100%;
+            margin: 1.5rem 0;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
+        }
+        
+        .card-selected .subscribe-btn {
+            background-color: var(--white);
+            color: var(--primary-color);
+            box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.3);
+        }
+        
+        .card-selected .subscribe-btn:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 15px -3px rgba(255, 255, 255, 0.4);
+        }
+        
+        .divider {
+            height: 1px;
+            background-color: #e5e7eb;
+            margin: 1.5rem 0;
+        }
+        
+        .card-selected .divider {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 1.5rem;
+        }
+        
+        .feature-item {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .feature-icon {
+            margin-right: 1rem;
+            min-width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .card-selected .feature-icon {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+        }
+        
+        .feature-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .package-tag {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background-color: #f8f9fa;
+            color: var(--dark-text);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .basic-tag {
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        .standard-tag {
+            border: 1px solid rgba(79, 70, 229, 0.3);
+        }
+        
+        .premium-tag {
+            border: 1px solid rgba(67, 56, 202, 0.3);
+        }
+        
+        .highlight {
+            background: linear-gradient(to right, #e11d48, #f97316);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 6px -1px rgba(225, 29, 72, 0.3);
+        }
+        
+        .card:hover .package-tag:not(.highlight) {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Animated gradient border for hovered non-selected cards */
+        @keyframes borderAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .card:hover:not(.card-selected)::before {
+            background: linear-gradient(90deg, #e11d48, #f97316, #facc15, #4ade80, #06b6d4, #6366f1, #8b5cf6, #d946ef);
+            background-size: 300% 300%;
+            animation: borderAnimation 3s ease infinite;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .price {
+                font-size: 3rem;
+            }
+            
+            .plan-name {
+                font-size: 1.25rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .section-heading {
+                font-size: 1.75rem;
+            }
+            
+            .card-body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="subscription-container">
+        <div class="text-center mb-5">
+            <h1 class="section-heading">Choose Your Perfect Plan</h1>
+            <p class="section-subheading">Select the best package that works for you</p>
+        </div>
+        
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <!-- Basic Plan -->
+            <div class="col">
+                <div class="card h-100">
+                    <span class="package-tag basic-tag">Starter</span>
+                    <div class="card-body d-flex flex-column">
+                        <span class="plan-badge standard-badge">Basic</span>
+                        <h2 class="plan-name">1 Month Access</h2>
+                        <p class="text-muted mb-0">Perfect for getting started</p>
+                        
+                        <div class="price-container">
+                            <span class="currency">$</span>
+                            <span class="price">19</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        
+                        <button class="btn btn-primary subscribe-btn">Subscribe Now</button>
+                        
+                        <div class="divider"></div>
+                        
+                        <div class="mt-2 mb-3">
+                            <h6 class="fw-bold">What's included:</h6>
+                        </div>
+                        
+                        <ul class="feature-list mt-auto">
+                            <li class="feature-item">
+                                <span class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="feature-text">Priority access to specialized experiences</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="feature-text">Integrated design for educational services</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="feature-text">Basic support via email</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="feature-text">Up to 5 project exports per month</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pro Plan -->
+            <div class="col">
+                <div class="card h-100">
+                    <span class="package-tag standard-tag">Popular</span>
+                    <div class="card-body d-flex flex-column">
+                        <span class="plan-badge pro-badge">Standard</span>
+                        <h2 class="plan-name">2 Month Access</h2>
+                        <p class="text-muted mb-0">Great value for longer use</p>
+                        
+                        <div class="price-container">
+                            <span class="currency">$</span>
+                            <span class="price">34</span>
+                            <span class="price-period">/2 months</span>
+                        </div>
+                        
+                        <button class="btn btn-primary subscribe-btn">Subscribe Now</button>
+                        
+                        <div class="divider"></div>
+                        
+                        <div class="mt-2 mb-3">
+                            <h6 class="fw-bold">What's included:</h6>
+                        </div>
+                        
+                        <ul class="feature-list mt-auto">
+                            <li class="feature-item">
+                                <span class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="feature-text">Everything in Basic, plus:</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="feature-text">Priority access to specialized experiences</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="feature-text">Integrated design for educational services</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="feature-text">Standard support with 24-hour response</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Premium Plan -->
+            <div class="col">
+                <div class="card h-100 card-selected">
+                    <span class="package-tag premium-tag highlight">Best Value</span>
+                    <div class="card-body d-flex flex-column">
+                        <span class="plan-badge premium-badge">Premium</span>
+                        <h2 class="plan-name">3 Month Access</h2>
+                        <p class="mb-0" style="color: rgba(255,255,255,0.8);">Our most popular package</p>
+                        
+                        <div class="price-container">
+                            <span class="currency">$</span>
+                            <span class="price">49</span>
+                            <span class="price-period">/3 months</span>
+                        </div>
+                        
+                        <button class="btn subscribe-btn">Subscribe Now</button>
+                        
+                        <div class="divider"></div>
+                        
+                        <div class="mt-2 mb-3">
+                            <h6 class="fw-bold">What's included:</h6>
+                        </div>
+                        
+                        <ul class="feature-list mt-auto">
+                            <li class="feature-item">
+                                <span class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="feature-text">Everything in Standard, plus:</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="feature-text">Access to certified "Experience" sessions</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="feature-text">SMS and call notifications for device security</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="feature-text">Clear financial tracking updates</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="feature-text">Premium 24/7 support with 6-hour response</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <p class="text-muted">All plans include a 14-day money-back guarantee. No questions asked.</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remove selection from all cards
+                    cards.forEach(c => {
+                        c.classList.remove('card-selected');
+                        const btn = c.querySelector('.subscribe-btn');
+                        const badge = c.querySelector('.plan-badge');
+                        const packageTag = c.querySelector('.package-tag');
+                        
+                        // Reset badge styling
+                        if (badge.classList.contains('premium-badge')) {
+                            badge.classList.remove('premium-badge');
+                            if (badge.textContent === 'Premium') {
+                                badge.classList.add('pro-badge');
+                            } else if (badge.textContent === 'Standard') {
+                                badge.classList.add('pro-badge');
+                            } else {
+                                badge.classList.add('standard-badge');
+                            }
+                        }
+                        
+                        // Reset button styling
+                        btn.classList.add('btn-primary');
+                        btn.classList.remove('btn-light');
+                        
+                        // Reset package tag styling
+                        if (packageTag) {
+                            packageTag.classList.remove('highlight');
+                            
+                            // Make sure paragraphs have proper color
+                            const paragraphs = c.querySelectorAll('p');
+                            paragraphs.forEach(p => {
+                                if (!p.classList.contains('section-subheading')) {
+                                    p.classList.add('text-muted');
+                                    p.style.color = '';
+                                }
+                            });
+                        }
+                    });
+                    
+                    // Add selection to clicked card
+                    this.classList.add('card-selected');
+                    
+                    const btn = this.querySelector('.subscribe-btn');
+                    btn.classList.remove('btn-primary');
+                    btn.classList.add('btn-light');
+                    
+                    const badge = this.querySelector('.plan-badge');
+                    badge.className = 'plan-badge premium-badge';
+                    
+                    // Highlight the package tag
+                    const packageTag = this.querySelector('.package-tag');
+                    if (packageTag) {
+                        packageTag.classList.add('highlight');
+                    }
+                    
+                    // Update paragraph colors for selected card
+                    const paragraphs = this.querySelectorAll('p');
+                    paragraphs.forEach(p => {
+                        if (!p.classList.contains('section-subheading')) {
+                            p.classList.remove('text-muted');
+                            p.style.color = 'rgba(255,255,255,0.8)';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
